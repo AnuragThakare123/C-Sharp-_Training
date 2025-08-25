@@ -36,6 +36,112 @@ class SmartMeterBill
 }
 
 -----------------
+Question 2: Smart Meter Customer Info
 
+Problem Statement: Create a Customer class for a smart meter system. Each customer has:
+CustomerID (int)
+Name (string)
+UnitsConsumed (int)
+Add a method ShowBill() to display customer info and bill amount assuming $5/unit
+
+
+using System;
+class Customer
+{
+  
+    public int CustomerID { get; set; }
+    public string Name { get; set; }
+    public int UnitsConsumed { get; set; }
+
+    public Customer(int customerID, string name, int unitsConsumed)
+    {
+        CustomerID = customerID;
+        Name = name;
+        UnitsConsumed = unitsConsumed;
+    }
+
+    public int CalculateBill()
+    {
+        return UnitsConsumed * 5;
+    }
+
+    public void ShowBill()
+    {
+        Console.WriteLine($"Customer: {Name} (ID: {CustomerID})");
+        Console.WriteLine($"Units Consumed: {UnitsConsumed}");
+        Console.WriteLine($"Total Bill: ${CalculateBill()}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter Customer ID: ");
+        int id = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Name: ");
+        string name = Console.ReadLine();
+
+        Console.Write("Enter Units Consumed: ");
+        int units = Convert.ToInt32(Console.ReadLine());
+
+        Customer customer = new Customer(id, name, units);
+
+        customer.ShowBill();
+    }
+}
+-----------
+Question 3: Smart Meter Statistics
+
+Problem Statement:
+Write a program to store weekly consumption of 7 days in an array for a customer. Calculate:
+Total units consumed
+Average consumption
+Day with highest consumption
+Use an enum for days of the week.
+
+
+using System;
+
+class SmartMeterStatistics
+{
+    enum Days { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday }
+
+    static void Main()
+    {
+        int[] units = new int[7];  
+
+        Console.WriteLine("Enter units consumed for each day (Mon-Sun):");
+
+       
+        for (int i = 0; i < units.Length; i++)
+        {
+            Console.Write($"{(Days)i}: ");
+            units[i] = Convert.ToInt32(Console.ReadLine());
+        }
+
+        int total = 0;
+        int maxUnits = units[0];
+        int maxDayIndex = 0;
+
+        for (int i = 0; i < units.Length; i++)
+        {
+            total += units[i];
+
+            if (units[i] > maxUnits)
+            {
+                maxUnits = units[i];
+                maxDayIndex = i;
+            }
+        }
+
+        double average = (double)total / units.Length;
+
+        Console.WriteLine($"\nTotal units: {total}");
+        Console.WriteLine($"Average units/day: {average:F2}");
+        Console.WriteLine($"Highest consumption: {(Days)maxDayIndex} ({maxUnits} units)");
+    }
+}
 
 
