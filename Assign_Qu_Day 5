@@ -1,1 +1,171 @@
+Q1. Inheritance
+Problem Statement:
+Create a base class SmartMeter with properties MeterId and CustomerName
+
+using System;
+
+class SmartMeter
+{
+    public int MeterId { get; set; }
+    public string CustomerName { get; set; }
+
+    public SmartMeter(int meterId, string customerName)
+    {
+        MeterId = meterId;
+        CustomerName = customerName;
+    }
+}
+
+
+class ResidentialMeter : SmartMeter
+{
+    public string HouseType { get; set; }
+
+    public ResidentialMeter(int meterId, string customerName, string houseType)
+        : base(meterId, customerName)  
+    {
+        HouseType = houseType;
+    }
+
+    public void ShowDetails()
+    {
+        Console.WriteLine($"Residential Meter -> ID: {MeterId}, Name: {CustomerName}, HouseType: {HouseType}");
+    }
+}
+
+class CommercialMeter : SmartMeter
+{
+    public string BusinessType { get; set; }
+
+    public CommercialMeter(int meterId, string customerName, string businessType)
+        : base(meterId, customerName)
+    {
+        BusinessType = businessType;
+    }
+
+    public void ShowDetails()
+    {
+        Console.WriteLine($"Commercial Meter -> ID: {MeterId}, Name: {CustomerName}, BusinessType: {BusinessType}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        ResidentialMeter resMeter = new ResidentialMeter(201, "Alice", "Apartment");
+        CommercialMeter comMeter = new CommercialMeter(301, "Bob", "Shop");
+
+        resMeter.ShowDetails();
+        comMeter.ShowDetails();
+    }
+}
+
+-----------------------
+Q2. Encapsulation
+Problem Statement:
+Create a class SmartMeterAccount with a private field balance.
+Provide methods Recharge(amount) and Consume(amount) to update the balance.
+If consumption exceeds balance, show "Insufficient balance".
+
+using System;
+
+class SmartMeterAccount
+{
+    private double balance;
+
+    public void Recharge(double amount)
+    {
+        if (amount > 0)
+        {
+            balance += amount;
+            Console.WriteLine($"Balance after recharge: {balance}");
+        }
+        else
+        {
+            Console.WriteLine("Invalid recharge amount.");
+        }
+    }
+
+    public void Consume(double amount)
+    {
+        if (amount <= balance)
+        {
+            balance -= amount;
+            Console.WriteLine($"Balance after consumption: {balance}");
+        }
+        else
+        {
+            Console.WriteLine("Insufficient balance");
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        SmartMeterAccount account = new SmartMeterAccount();
+
+        account.Recharge(500);
+        account.Consume(200);
+        account.Consume(400);
+    }
+}
+
+--------------------
+Q3. Polymorphism (Abstraction + Override)
+Problem Statement:
+Create an abstract class MeterReading with a method CalculateBill().
+ResidentialReading charges ₹5 per unit.
+CommercialReading charges ₹8 per unit.
+Use polymorphism to calculate bills.
+
+
+
+using System;
+
+abstract class MeterReading
+{
+    public int Units { get; set; }
+
+    public MeterReading(int units)
+    {
+        Units = units;
+    }
+
+    public abstract double CalculateBill();
+}
+
+class ResidentialReading : MeterReading
+{
+    public ResidentialReading(int units) : base(units) { }
+
+    public override double CalculateBill()
+    {
+        return Units * 5;  
+    }
+}
+
+class CommercialReading : MeterReading
+{
+    public CommercialReading(int units) : base(units) { }
+
+    public override double CalculateBill()
+    {
+        return Units * 8;  
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        MeterReading res = new ResidentialReading(100);
+        MeterReading com = new CommercialReading(100);
+
+        Console.WriteLine($"Residential Bill = {res.CalculateBill()}");
+        Console.WriteLine($"Commercial Bill = {com.CalculateBill()}");
+    }
+}
 
