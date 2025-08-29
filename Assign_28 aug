@@ -1,0 +1,107 @@
+Task 1:
+
+1. Use a Nested List to store readings of one meter for a week, 7 days 3 time slots like Morning, Afternoon, Night.
+2. Use a Nested Dictionary to store readings of multiple Areas - Houses - Daily readings.
+3. Use a Dictionary with List to store Area Name - List of meters in that area.
+4. Use a List of Dictionary to store a list of complaints where each complaint has fields like- Housenumber/MeterNum, Issue and Date.
+
+Write a program to:
+• Print the Night reading of Day 3 for a particular meter from Nested List.
+• Print all readings of a specific house from Nested Dictionary.
+• Print all meters in a given area from Dictionary of List.
+• Print all complaints from List of Dictionary.
+
+
+using System;
+us
+ing System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // 1. Nested List: Meter readings for 7 days (3 slots per day)
+    
+        List<List<int>> meterReadings = new List<List<int>>()
+        {
+            new List<int>{10, 15, 20},   // Day 1
+            new List<int>{12, 16, 22},   // Day 2
+            new List<int>{14, 18, 25},   // Day 3
+            new List<int>{11, 15, 21},   // Day 4
+            new List<int>{13, 17, 23},   // Day 5
+            new List<int>{15, 19, 27},   // Day 6
+            new List<int>{16, 20, 28}    // Day 7
+        };
+
+        // Print Night reading of Day 3
+        Console.WriteLine("Night Reading of Day 3: " + meterReadings[2][2]);
+
+
+        // 2. Nested Dictionary -> to store Area - House - Daily reading
+        var areaReadings = new Dictionary<string, Dictionary<string, List<int>>>()
+        {
+            { "Area1", new Dictionary<string, List<int>>()
+                {
+                    { "House1", new List<int>{100,120,110,115,118,122,119} },
+                    { "House2", new List<int>{90,95,100,105,102,101,99} }
+                }
+            },
+            { "Area2", new Dictionary<string, List<int>>()
+                {
+                    { "House3", new List<int>{130,135,138,140,142,145,150} },
+                    { "House4", new List<int>{80,85,87,90,88,86,89} }
+                }
+            }
+        };
+
+        // Print all readings of House3
+        Console.WriteLine("\nAll Readings of House3: " + string.Join(", ", areaReadings["Area2"]["House3"]));
+
+
+        // 3. Dictionary with List 
+        
+        var areaMeters = new Dictionary<string, List<string>>()
+        {
+            { "Area1", new List<string>{ "MTR101", "MTR102", "MTR103" } },
+            { "Area2", new List<string>{ "MTR201", "MTR202" } },
+            { "Area3", new List<string>{ "MTR301", "MTR302", "MTR303", "MTR304" } }
+        };
+
+        // Print all meters in Area2
+        Console.WriteLine("\nMeters in Area2: " + string.Join(", ", areaMeters["Area2"]));
+
+
+        // 4. List of Dictionary → Complaints List
+        var complaints = new List<Dictionary<string, string>>()
+        {
+            new Dictionary<string, string>()
+            {
+                {"HouseNumber", "H101"},
+                {"MeterNumber", "MTR101"},
+                {"Issue", "Meter not working"},
+                {"Date", "2025-08-20"}
+            },
+            new Dictionary<string, string>()
+            {
+                {"HouseNumber", "H202"},
+                {"MeterNumber", "MTR202"},
+                {"Issue", "High reading"},
+                {"Date", "2025-08-21"}
+            }
+        };
+
+        // Print all complaints
+        Console.WriteLine("\nComplaints List:");
+        foreach (var complaint in complaints)
+        {
+            Console.WriteLine($"House: {complaint["HouseNumber"]}, Meter: {complaint["MeterNumber"]}, Issue: {complaint["Issue"]}, Date: {complaint["Date"]}");
+        }
+    }
+}
+----------------------***--------------
+
+
+
+
+
+
