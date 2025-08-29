@@ -99,6 +99,172 @@ class Program
     }
 }
 ----------------------***--------------
+using System;
+using System.Collections.Generic;
+
+#region ENUM
+// 1. Enum
+enum MeterStatus { Active, Inactive, Fault }
+#endregion
+
+#region STRUCT
+// 2. Struct
+struct Reading
+{
+    public DateTime Date { get; }
+    public int Units { get; }
+
+    public Reading(DateTime date, int units)
+    {
+        Date = date;
+        Units = units;
+    }
+}
+#endregion
+
+#region ABSTRACT CLASS
+// 3. Abstract Class and Inheritance
+abstract class Notifier
+{
+    public abstract void SendMessage(string msg);
+}
+
+class SmsNotifier : Notifier
+{
+    private string phone;
+    public SmsNotifier(string phone) { this.phone = phone; }
+    public override void SendMessage(string msg)
+    {
+        Console.WriteLine($"[SMS to {phone}] {msg}");
+    }
+}
+
+class EmailNotifier : Notifier
+{
+    private string email;
+    public EmailNotifier(string email) { this.email = email; }
+    public override void SendMessage(string msg)
+    {
+        Console.WriteLine($"[Email to {email}] {msg}");
+    }
+}
+#endregion
+
+#region STATIC CLASS
+// 6. Static Class
+static class Tariff
+{
+    public static double RatePerUnit = 5.0;
+}
+#endregion
+
+#region SEALED CLASS
+// 7. Sealed Class
+sealed class BillCalculator
+{
+    public double CalculateBill(List<Reading> readings)
+    {
+        int totalUnits = 0;
+        foreach (var r in readings)
+            totalUnits += r.Units;
+
+        return totalUnits * Tariff.RatePerUnit;
+    }
+}
+#endregion
+
+#region PARTIAL CLASS
+// 8. Partial Class
+partial class Customer
+{
+    public string Name { get; set; }
+    public string? Email { get; set; }  // Nullable
+}
+
+partial class Customer
+{
+    public string? Phone { get; set; }
+
+    // Pick email if present, otherwise fallback to phone
+    public string GetContact() => Email ?? Phone ?? "No contact available";
+}
+#endregion
+
+#region METER + NESTED CLASS + EVENT
+// 9. Nested Class + Event
+class Meter
+{
+    public string MeterId { get; }
+    public MeterStatus Status { get; set; }
+
+    public Meter(string meterId, MeterStatus status)
+    {
+        MeterId = meterId;
+        Status = status;
+        History = new ReadingHistory();
+    }
+
+    // Nested class: ReadingHistory
+    public class ReadingHistory
+    {
+        private List<Reading> readings = new List<Reading>();
+        public IReadOnlyList<Reading> Readings => readings.AsReadOnly();
+
+        public void AddReading(Reading r) => readings.Add(r);
+    }
+
+    public ReadingHistory History { get; }
+
+    // 4. Event
+    public event Action<Reading>? NewReadingAdded;
+
+    public void AddReading(Reading r)
+    {
+        History.AddReading(r);
+        // Trigger event
+        NewReadingAdded?.Invoke(r);
+    }
+}
+#endregion
+
+class Program
+{
+    static void Main()
+    {
+        // 1) Create a Customer with only phone
+        Customer customer1 = new Customer { Name = "Raj", Phone = "9876543210" };
+
+        // Or only email
+        Customer customer2 = new Customer { Name = "Anita", Email = "anita@example.com" };
+
+        Console.WriteLine($"Customer1 Contact: {customer1.GetContact()}");
+        Console.WriteLine($"Customer2 Contact: {customer2.GetContact()}");
+
+        // 2) Create a meter
+        Meter meter = new Meter("MTR101", MeterStatus.Active);
+
+        // 3) Setup Notifier depending on available contact
+        Notifier notifier = (customer1.Email != null)
+            ? new EmailNotifier(customer1.Email)
+            : new SmsNotifier(customer1.Phone ?? "Unknown");
+
+        // Subscribe to event
+        meter.NewReadingAdded += (reading) =>
+        {
+            notifier.SendMessage($"New reading added: {reading.Units} units on {reading.Date:d}");
+        };
+
+        // 4) Add readings (this will trigger event)
+        meter.AddReading(new Reading(DateTime.Now, 50));
+        meter.AddReading(new Reading(DateTime.Now.AddDays(1), 30));
+
+        // 5) Generate Bill
+        BillCalculator calc = new BillCalculator();
+        double bill = calc.CalculateBill(new List<Reading>(meter.History.Readings));
+        Console.WriteLine($"\nBill for Meter {meter.MeterId}: ₹{bill}");
+    }
+}
+
 
 
 
