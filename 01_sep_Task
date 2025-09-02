@@ -1,23 +1,45 @@
-1)
+1)File Handling: Create a file named favorites.txt that stores 5 favorite colors entered by the
+user. Then read and display all colors.
 
 
+using System;
+using System.IO;
 
 
+class MyFile
+{
+     static void Main()
 
+    {
+        string path = @"C:\Users\AnuragShaileshThakar\OneDrive - Esyasoft Technologies Pvt. Ltd\Desktop\C#\anu.txt";
 
+        using (StreamWriter sw = new StreamWriter(path))
 
+        {
 
+            for (int i = 0; i < 5; i++)
 
+                sw.WriteLine(Console.ReadLine());
 
+        }
 
+        string[] colors = File.ReadAllLines(path);
 
+        foreach (string color in colors)
 
+            Console.WriteLine(color);
 
+    }
 
-
-
+}
 
 --------------------
+2)Asynchronous Programming: Write an async method that simulates downloading a file by
+waiting 5 seconds, then prints "Download complete!". Call this method from Main() using 
+await .
+
+
+
 using System;
 using System.Threading.Tasks;
 
