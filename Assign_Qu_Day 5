@@ -60,7 +60,71 @@ class Program
         comMeter.ShowDetails();
     }
 }
+OR
 
+using System;
+
+namespace HelloWorld
+{
+    class SmartMeter
+    {
+        public int MeterID;
+        public String CustomerName;
+
+    }
+
+    class ResidentiaMeter : SmartMeter
+    {
+        public String Property;
+
+        public void showinfo()
+        {
+            System.Console.Write("Customer info for ResidentialMeter ->");
+
+            System.Console.Write("ID:"+ MeterID + " ");
+            System.Console.Write("Name:" + CustomerName + " ");
+            System.Console.WriteLine("HouseType:" + Property);
+            
+        }
+        
+    }
+
+    class CommercialMeter : SmartMeter
+    {
+        public String Property;
+        public void showinfo()
+        {
+            System.Console.Write("Customer info for Commercialmeter->");
+
+            System.Console.Write("Id:" + MeterID + " ");
+            System.Console.Write("Name:" + CustomerName + " ");
+            System.Console.Write("BusinessType:" + Property);
+            
+        }
+    }
+
+    class program
+    {
+        static void Main(String[] args)
+
+        {
+            ResidentiaMeter R1 = new ResidentiaMeter();
+            R1.MeterID = 201;
+            R1.CustomerName = "Alice";
+            R1.Property = "Apartment";
+            R1.showinfo();
+
+
+            CommercialMeter C1 = new CommercialMeter();
+            C1.MeterID = 301;
+            C1.CustomerName = "Bob";
+            C1.Property = "Shop";
+            C1.showinfo();
+
+
+        }
+    }
+}
 -----------------------
 Q2. Encapsulation
 Problem Statement:
