@@ -233,3 +233,56 @@ class Program
     }
 }
 
+// OR
+
+using System;
+
+namespace HelloWorld
+{
+    public abstract class MeterReading
+    {
+        public abstract void CalculateBill();
+    }
+
+    public class ResidentialReading : MeterReading
+    {
+        public int Units { get; set; }
+
+        public override void CalculateBill()
+        {
+            Console.WriteLine("Residential Meter Reading: " + Units * 5);
+        }
+
+        public ResidentialReading(int units)
+        {
+            Units = units;
+        }
+    }
+
+    public class CommercialReading : MeterReading
+    {
+        public int Units { get; set; }
+
+        public override void CalculateBill()
+        {
+            Console.WriteLine("Commercial Meter Reading: " + Units * 8);
+        }
+
+        public CommercialReading(int units){
+            Units = units;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ResidentialReading R1 = new ResidentialReading(100); // pass units
+            R1.CalculateBill(); // now uses overridden method
+
+            CommercialReading C1 = new CommercialReading (100); // pass units
+            C1.CalculateBill(); 
+        }
+    }
+}
+
