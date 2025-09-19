@@ -177,6 +177,56 @@ class Program
     }
 }
 
+or
+using System;
+
+namespace HelloWorld
+{
+
+    public class SmartMeterAccount
+    {
+        private int balance;
+
+        public void Recharge(int amount)
+        {
+            if (amount > 0)
+            {
+                System.Console.WriteLine("Balance after recharge:"+ (balance = balance + amount));
+            }
+            else
+            {
+                System.Console.WriteLine("Amt is insufficient");
+            }
+        }
+
+        public void Consumption(int amount)
+        {
+            if (amount <= balance)
+            {
+                System.Console.WriteLine("Balance after Consumption:" + (balance = balance - amount));
+            }
+            else
+            {
+                System.Console.WriteLine("Amt is insufficient");
+            }
+        }
+    }
+ 
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SmartMeterAccount Sm1 = new SmartMeterAccount();
+            Sm1.Recharge(500);
+            Sm1.Consumption(200);
+            Sm1.Consumption(400);
+
+
+       }
+    }
+}
+
+
 --------------------
 Q3. Polymorphism (Abstraction + Override)
 Problem Statement:
